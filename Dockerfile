@@ -1,27 +1,21 @@
-# Stage 1: Build the application
-FROM node:18-alpine AS build
+# Use the official Node.js image as the base
+FROM node:18-lts
 
 # Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json (if present) and install dependencies
-COPY package*.json ./
+# Install dependencies
+COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy the rest of the application source code
+# Copy the Next.js app source code
 COPY . .
 
-# Build the Next.js application
+# Build the Next.js app
 RUN npm run build
 
-# Stage 2: Serve the application with nginx
-FROM nginx:alpine
+# Expose port 8080 (required by Azure Web App)
+EXPOSE 8080
 
-# Copy the built application from the build stage to nginx's html directory
-COPY --from=build /app/.next /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start the Next.js app on port 8080 (Override default Next.js port)
+CMD ["npm", "start"]
