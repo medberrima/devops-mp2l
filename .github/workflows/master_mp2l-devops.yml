@@ -17,28 +17,26 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Cache Docker layers
-        uses: actions/cache@v4
+        uses: actions/cache@v2
         with:
-          path: ~/.cache/docker
-          key: ${{ runner.os }}-docker-${{ github.sha }}
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-docker-
+            ${{ runner.os }}-buildx-
 
       - name: Build Docker image
         run: |
-          docker build -t my-node-app .
-
-      - name: Log in to Azure Container Registry
-        uses: azure/docker-login@v1
+          docker build -t ${{ secrets.DOCKER_REGISTRY_USERNAME }}/mp2l-devops:${{ github.sha }} .
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
         with:
-          login-server: ${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.AZURE_CONTAINER_REGISTRY_USERNAME }}
-          password: ${{ secrets.AZURE_CONTAINER_REGISTRY_PASSWORD }}
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
-      - name: Push Docker image to Azure Container Registry
+      - name: Push Docker image to Docker Hub
         run: |
-          docker tag my-node-app ${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/my-node-app:latest
-          docker push ${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/my-node-app:latest
+          docker push ${{ secrets.DOCKER_REGISTRY_USERNAME }}/mp2l-devops:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -59,8 +57,8 @@ jobs:
 
       - name: 'Deploy Docker container to Azure Web App'
         id: deploy-to-webapp
-        uses: azure/webapps-container-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: 'mp2l-devops'
           slot-name: 'Production'
-          images: ${{ secrets.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/my-node-app:latest
+          image: ${{ secrets.DOCKER_REGISTRY_USERNAME }}/mp2l-devops:${{ github.sha }}
