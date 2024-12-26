@@ -3,10 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
-    "start": "PORT=8080 next start",
-    "lint": "next lint"
+    "start": "next start",
+    "export": "next build && next export",
+    "docker:build:dev": "docker build -f Dockerfile.dev -t mp2l-devops:dev .",
+    "docker:build:prod": "docker build -f Dockerfile -t mp2l-devops:prod .",
+    "docker:run:dev": "docker run -p 3000:3000 -v $(pwd):/app mp2l-devops:dev",
+    "docker:run:prod": "docker run -p 3000:3000 mp2l-devops:prod",
+    "docker:compose:dev": "docker-compose up dev",
+    "docker:compose:prod": "docker-compose up prod",
+    "docker:down": "docker-compose down"
   },
   "dependencies": {
     "react": "^19.0.0",

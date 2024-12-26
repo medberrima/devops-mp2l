@@ -1,3 +1,29 @@
+# Dockerfile
+# Use the official Node.js image as the base
+FROM node:18
+
+# Set the working directory
+WORKDIR /app
+
+# Install dependencies
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Copy the Next.js app source code
+COPY . .
+
+# Build the Next.js app
+RUN npm run build
+
+# Expose port 8080 (required by Azure Web App)
+EXPOSE 8080
+
+# Start the Next.js app on port 8080
+CMD ["npm", "start"]
+
+---
+
+# GitHub Actions Workflow
 name: Build and deploy Node.js app to Azure Web App - mp2l-devops
 
 on:
@@ -15,6 +41,14 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Cache Docker layers
         uses: actions/cache@v2
@@ -36,7 +70,9 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: |
+          docker tag ${{ secrets.DOCKER_REGISTRY_USERNAME }}/mp2l-devops:${{ github.sha }} ${{ secrets.DOCKER_REGISTRY_USERNAME }}/mp2l-devops:latest
           docker push ${{ secrets.DOCKER_REGISTRY_USERNAME }}/mp2l-devops:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_REGISTRY_USERNAME }}/mp2l-devops:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -55,10 +91,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_48474C7A22FB45FA9A942FEC929A64F1 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9BAB63352C7449A78B7DE9B322474C2D }}
 
-      - name: 'Deploy Docker container to Azure Web App'
+      - name: Deploy Docker container to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'mp2l-devops'
-          slot-name: 'Production'
+          slot-name: 'production'
           image: ${{ secrets.DOCKER_REGISTRY_USERNAME }}/mp2l-devops:${{ github.sha }}

@@ -1,21 +1,35 @@
-# Use the official Node.js image as the base
-FROM node:18
+# Step 1: Use an official Node.js image as the base image
+FROM node:18 AS builder
 
-# Set the working directory
+# Step 2: Set the working directory in the container
 WORKDIR /app
 
-# Install dependencies
+# Step 3: Copy package.json and package-lock.json
 COPY package.json package-lock.json ./
-RUN npm install
 
-# Copy the Next.js app source code
+# Step 4: Install dependencies
+RUN npm install --production
+
+# Step 5: Copy the rest of the app code
 COPY . .
 
-# Build the Next.js app
+# Step 6: Build the Next.js app
 RUN npm run build
 
-# Expose port 8080 (required by Azure Web App)
-EXPOSE 8080
+# Step 7: Prepare the production stage
+FROM node:18-slim
 
-# Start the Next.js app on port 8080 (Override default Next.js port)
+# Step 8: Set the working directory
+WORKDIR /app
+
+# Step 9: Copy the build files from the builder image
+COPY --from=builder /app ./
+
+# Step 10: Install only production dependencies
+RUN npm install --production
+
+# Step 11: Expose the port
+EXPOSE 3000
+
+# Step 12: Start the Next.js app in production mode
 CMD ["npm", "start"]
