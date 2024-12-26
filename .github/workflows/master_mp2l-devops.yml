@@ -1,28 +1,3 @@
-# Dockerfile
-# Use the official Node.js image as the base
-FROM node:18
-
-# Set the working directory
-WORKDIR /app
-
-# Install dependencies
-COPY package.json package-lock.json ./
-RUN npm ci
-
-# Copy the Next.js app source code
-COPY . .
-
-# Build the Next.js app
-RUN npm run build
-
-# Expose port 8080 (required by Azure Web App)
-EXPOSE 8080
-
-# Start the Next.js app on port 8080
-CMD ["npm", "start"]
-
----
-
 # GitHub Actions Workflow
 name: Build and deploy Node.js app to Azure Web App - mp2l-devops
 
