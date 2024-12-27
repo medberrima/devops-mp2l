@@ -7,7 +7,7 @@ const Page = () => {
 
 
   // unused variable
-  const unusedVariable = 'This is not used';
+  // const unusedVariable = 'This is not used';
 
 
   return (
@@ -25,7 +25,7 @@ const Page = () => {
       </section>
 
       <footer style={styles.footer}>
-        <p>Page 7 - mohamed - {formattedDate} - {formattedTime}</p>
+        <p>Page 8 - mohamed - {formattedDate} - {formattedTime}</p>
       </footer>
     </div>
   );
