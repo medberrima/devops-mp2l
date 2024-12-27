@@ -377,7 +377,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.14.5"
 
-"@babel/plugin-syntax-typescript@^7.7.2":
+"@babel/plugin-syntax-typescript@^7.25.9", "@babel/plugin-syntax-typescript@^7.7.2":
   version "7.25.9"
   resolved "https://registry.npmjs.org/@babel/plugin-syntax-typescript/-/plugin-syntax-typescript-7.25.9.tgz"
   integrity sha512-hjMgRy5hb8uJJjUcdWunWVcoi9bGpJp8p5Ol1229PoN6aytsLwNMgmdftO23wnCLMfVmTwZDWMPNq/D1SY60JQ==
@@ -781,6 +781,17 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.25.9"
 
+"@babel/plugin-transform-typescript@^7.25.9":
+  version "7.26.3"
+  resolved "https://registry.npmjs.org/@babel/plugin-transform-typescript/-/plugin-transform-typescript-7.26.3.tgz"
+  integrity sha512-6+5hpdr6mETwSKjmJUdYw0EIkATiQhnELWlE3kJFBwSg/BGIVwVaVbX+gOXBCdc7Ln1RXZxyWGecIXhUfnl7oA==
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.25.9"
+    "@babel/helper-create-class-features-plugin" "^7.25.9"
+    "@babel/helper-plugin-utils" "^7.25.9"
+    "@babel/helper-skip-transparent-expression-wrappers" "^7.25.9"
+    "@babel/plugin-syntax-typescript" "^7.25.9"
+
 "@babel/plugin-transform-unicode-escapes@^7.25.9":
   version "7.25.9"
   resolved "https://registry.npmjs.org/@babel/plugin-transform-unicode-escapes/-/plugin-transform-unicode-escapes-7.25.9.tgz"
@@ -907,6 +918,17 @@
     "@babel/plugin-transform-react-jsx" "^7.25.9"
     "@babel/plugin-transform-react-jsx-development" "^7.25.9"
     "@babel/plugin-transform-react-pure-annotations" "^7.25.9"
+
+"@babel/preset-typescript@^7.26.0":
+  version "7.26.0"
+  resolved "https://registry.npmjs.org/@babel/preset-typescript/-/preset-typescript-7.26.0.tgz"
+  integrity sha512-NMk1IGZ5I/oHhoXEElcm+xUnL/szL6xflkFZmoEU9xj1qSJXpiS7rsspYo92B4DRCDvZn2erT5LdsCeXAKNCkg==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.25.9"
+    "@babel/helper-validator-option" "^7.25.9"
+    "@babel/plugin-syntax-jsx" "^7.25.9"
+    "@babel/plugin-transform-modules-commonjs" "^7.25.9"
+    "@babel/plugin-transform-typescript" "^7.25.9"
 
 "@babel/runtime@^7.12.5", "@babel/runtime@^7.8.4":
   version "7.26.0"
