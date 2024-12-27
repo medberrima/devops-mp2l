@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
-// import { render, screen, fireEvent } from '@testing-library/react';
+// import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import Button from './Button';
 
@@ -11,15 +11,15 @@ describe('Button Component', () => {
     expect(buttonElement).toBeInTheDocument(); // This should now work
   });
 
-  // test('fires onClick event when clicked', () => {
-  //   const handleClick = jest.fn();
-  //   render(<Button label="Click me" onClick={handleClick} />);
-  //   const buttonElement = screen.getByText(/Click me/i);
+  test('fires onClick event when clicked', () => {
+    const handleClick = jest.fn();
+    render(<Button label="Click me" onClick={handleClick} />);
+    const buttonElement = screen.getByText(/Click me/i);
     
-  //   // Simulate click event
-  //   fireEvent.click(buttonElement);
+    // Simulate click event
+    fireEvent.click(buttonElement);
 
-  //   // Check if the click event was fired
-  //   expect(handleClick).toHaveBeenCalledTimes(1);
-  // });
+    // Check if the click event was fired
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
 });
