@@ -22,6 +22,14 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
+      # Authenticate to Azure using Service Principal
+      - name: Authenticate to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+
       # Build and push the Docker image
       - name: Build & Push Docker Image
         uses: docker/build-push-action@v2
@@ -29,7 +37,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          no-cache: true 
+          no-cache: true
           tags: ${{ secrets.ACR_ENDPOINT }}/setechnextjsapp:${{ github.run_id }}
           build-args: |
             CONTENTFUL_SPACE_ID=${{ secrets.NEXT_PUBLIC_CONTENTFUL_SPACE_ID }}
