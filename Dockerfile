@@ -22,7 +22,7 @@ RUN npm ci
 COPY . .
 
 # Build the Next.js app
-RUN npm run build
+RUN npm run build --verbose
 
 # Debugging: Log environment variables (optional, can be removed in production)
 RUN echo "Building with CONTENTFUL_SPACE_ID=${CONTENTFUL_SPACE_ID} and CONTENTFUL_ACCESS_TOKEN=${CONTENTFUL_ACCESS_TOKEN}"
