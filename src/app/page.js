@@ -5,6 +5,11 @@ const Page = () => {
   const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
   const formattedTime = `${currentDate.getHours()}h${currentDate.getMinutes()}`;
 
+
+  // unused variable
+  const unusedVariable = 'This is not used';
+
+
   return (
     <div style={styles.pageContainer}>
       <header style={styles.header}>

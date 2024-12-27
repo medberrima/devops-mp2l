@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "export": "next build && next export",
+    "lint": "eslint src",
     "docker:build:dev": "docker build -f Dockerfile.dev -t mp2l-devops:dev .",
     "docker:build:prod": "docker build -f Dockerfile -t mp2l-devops:prod .",
     "docker:run:dev": "docker run -p 3000:3000 -v $(pwd):/app mp2l-devops:dev",
@@ -16,17 +17,23 @@
     "docker:down": "docker-compose down"
   },
   "dependencies": {
+    "next": "15.1.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.1.2"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.2",
-    "@eslint/eslintrc": "^3"
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2",
+    "eslint": "^9.17.0",
+    "eslint-config-next": "^15.1.2",
+    "eslint-plugin-react": "^7.37.3",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^15.14.0",
+    "typescript": "^5",
+    "typescript-eslint": "^8.18.2"
   }
 }
