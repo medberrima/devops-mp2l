@@ -7,7 +7,7 @@ const Page = () => {
 
   return (
     <div>
-      Page 2 - {formattedDate} - {formattedTime}
+      Page 3 - {formattedDate} - {formattedTime}
     </div>
   );
 };
