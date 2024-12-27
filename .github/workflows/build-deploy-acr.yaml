@@ -30,7 +30,31 @@ jobs:
       - name: Run ESLint
         run: |
           npm run lint
-          
+
+  unit-testing:
+    needs: static-code-analysis-lint 
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          npm install
+
+      # Run unit tests with Jest
+      - name: Run Jest Tests
+        run: |
+          npm run test  # Runs the 'test' script defined in your package.json
+
   build:
     needs: static-code-analysis-lint 
     runs-on: ubuntu-latest

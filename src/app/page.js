@@ -7,7 +7,7 @@ const Page = () => {
 
 
   // unused variable
-  const unusedVariable = 'This is not used';
+  // const unusedVariable = 'This is not used';
 
 
   return (
