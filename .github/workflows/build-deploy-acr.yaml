@@ -3,7 +3,7 @@ name: Deploy to Azure Container App
 on:
   push:
     branches:
-      - master  
+      - master
   workflow_dispatch:
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
           file: ./Dockerfile
           push: true
           no-cache: true
-          tags: ${{ secrets.ACR_ENDPOINT }}/setechnextjsapp:${{ github.run_id }}
+          tags: ${{ secrets.ACR_ENDPOINT }}/setechnextjsapp:latest  # Using the 'latest' tag
           build-args: |
             CONTENTFUL_SPACE_ID=${{ secrets.NEXT_PUBLIC_CONTENTFUL_SPACE_ID }}
             CONTENTFUL_ACCESS_TOKEN=${{ secrets.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN }}
@@ -46,4 +46,4 @@ jobs:
         run: |
           az containerapp update --name nextjscontainermp2l \
           --resource-group "nextjsappmp2l" \
-          --image ${{ secrets.ACR_ENDPOINT }}/setechnextjsapp:${{ github.run_id }}
+          --image ${{ secrets.ACR_ENDPOINT }}/setechnextjsapp:latest  # Using the 'latest' tag
