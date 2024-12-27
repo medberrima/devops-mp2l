@@ -22,12 +22,6 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      # Authenticate to Azure using Service Principal
-      - name: Authenticate to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       # Build and push the Docker image
       - name: Build & Push Docker Image
         uses: docker/build-push-action@v2
@@ -36,14 +30,24 @@ jobs:
           file: ./Dockerfile
           push: true
           no-cache: true
-          tags: ${{ secrets.ACR_ENDPOINT }}/setechnextjsapp:latest  # Using the 'latest' tag
+          tags: ${{ secrets.ACR_ENDPOINT }}/setechnextjsapp:latest  # Using 'latest' tag
           build-args: |
             CONTENTFUL_SPACE_ID=${{ secrets.NEXT_PUBLIC_CONTENTFUL_SPACE_ID }}
             CONTENTFUL_ACCESS_TOKEN=${{ secrets.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN }}
+
+  deploy:
+    needs: build  # This ensures the deploy job runs after the build job is successful
+    runs-on: ubuntu-latest
+    steps:
+      # Authenticate to Azure using Service Principal
+      - name: Authenticate to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Deploy to Azure Container App
       - name: Deploy to Azure Container App
         run: |
           az containerapp update --name nextjscontainermp2l \
           --resource-group "nextjsappmp2l" \
-          --image ${{ secrets.ACR_ENDPOINT }}/setechnextjsapp:latest  # Using the 'latest' tag
+          --image ${{ secrets.ACR_ENDPOINT }}/setechnextjsapp:latest  # Using 'latest' tag
