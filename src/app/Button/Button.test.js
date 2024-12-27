@@ -10,13 +10,15 @@ describe('Button Component', () => {
     expect(buttonElement).toBeInTheDocument(); // This should now work
   });
 
-  // test('fires onClick event when clicked (intentionally failing)', () => {
+  // test('fires onClick event when clicked', () => {
   //   const handleClick = jest.fn();
   //   render(<Button label="Click me" onClick={handleClick} />);
   //   const buttonElement = screen.getByText(/Click me/i);
+    
+  //   // Simulate click event
   //   fireEvent.click(buttonElement);
 
-  //   // Intentionally fail the test by expecting the wrong number of calls
-  //   expect(handleClick).toHaveBeenCalledTimes(2); // This will fail, should be 1 instead of 2
+  //   // Check if the click event was fired
+  //   expect(handleClick).toHaveBeenCalledTimes(1);
   // });
 });

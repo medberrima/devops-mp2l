@@ -56,7 +56,7 @@ jobs:
           npm run test  # Runs the 'test' script defined in your package.json
 
   build:
-    needs: static-code-analysis-lint 
+    needs: unit-testing
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository
