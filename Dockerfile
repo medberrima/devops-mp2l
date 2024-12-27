@@ -1,21 +1,17 @@
-# Use official Node.js image as base
-FROM node:18-alpine
+FROM node:18-alpine AS deps
 
-# Set the working directory
-WORKDIR /app
+ARG CONTENTFUL_SPACE_ID
+ARG CONTENTFUL_ACCESS_TOKEN
+ENV NEXT_PUBLIC_CONTENTFUL_SPACE_ID ${CONTENTFUL_SPACE_ID}
+ENV NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN ${CONTENTFUL_ACCESS_TOKEN}
 
-# Install dependencies
-COPY package.json package-lock.json ./
-RUN npm install
+WORKDIR /usr/app
 
-# Copy the application code
 COPY . .
 
-# Build the Next.js application
+RUN npm ci
+
 RUN npm run build
 
-# Expose port 3000 for the application
-EXPOSE 3000
+CMD [ "npm", "start" ]
 
-# Start the application
-CMD ["npm", "start"]
