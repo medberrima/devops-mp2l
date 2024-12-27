@@ -10,9 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Log in to Azure Container Registry (ACR)
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
         with:
@@ -20,31 +22,22 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
+      # Build and push the Docker image
       - name: Build & Push Docker Image
         uses: docker/build-push-action@v2
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.ACR_ENDPOINT }}/setechnextjsapp:latest
+          no-cache: true 
+          tags: ${{ secrets.ACR_ENDPOINT }}/setechnextjsapp:${{ github.run_id }}
           build-args: |
             CONTENTFUL_SPACE_ID=${{ secrets.NEXT_PUBLIC_CONTENTFUL_SPACE_ID }}
             CONTENTFUL_ACCESS_TOKEN=${{ secrets.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN }}
 
-      - name: Azure CLI Login
-        uses: azure/cli@v1
-        with:
-          inlineScript: |
-            az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-            az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
+      # Deploy to Azure Container App
       - name: Deploy to Azure Container App
-        uses: azure/cli@v1
-        with:
-          inlineScript: |
-            az containerapp update \
-              --name your-container-app-name \
-              --resource-group your-resource-group-name \
-              --image ${{ secrets.ACR_ENDPOINT }}/setechnextjsapp:latest
-        env:
-          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        run: |
+          az containerapp update --name nextjscontainermp2l \
+          --resource-group "nextjsappmp2l" \
+          --image ${{ secrets.ACR_ENDPOINT }}/setechnextjsapp:${{ github.run_id }}
