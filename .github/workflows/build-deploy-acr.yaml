@@ -35,6 +35,20 @@ jobs:
             CONTENTFUL_SPACE_ID=${{ secrets.NEXT_PUBLIC_CONTENTFUL_SPACE_ID }}
             CONTENTFUL_ACCESS_TOKEN=${{ secrets.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN }}
 
+  static-code-analysis:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Run static code analysis
+      - name: Run ESLint
+        run: |
+          npm ci
+          npm run lint
+
   deploy:
     needs: build  # This ensures the deploy job runs after the build job is successful
     runs-on: ubuntu-latest
