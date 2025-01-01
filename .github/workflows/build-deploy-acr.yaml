@@ -64,12 +64,6 @@ jobs:
         run: |
           snyk test --all-projects --json
 
-      # Optional: Monitor the project for vulnerabilities
-      - name: Snyk Monitor for vulnerabilities
-        run: |
-          snyk monitor
-
-
   unit-testing:
     needs: snyk-scan
     runs-on: ubuntu-latest
