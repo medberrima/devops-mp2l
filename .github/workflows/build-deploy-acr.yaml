@@ -62,7 +62,7 @@ jobs:
       # Run Snyk test for vulnerabilities
       - name: Snyk Test for vulnerabilities
         run: |
-          snyk test
+          snyk test --all-projects --json
 
       # Optional: Monitor the project for vulnerabilities
       - name: Snyk Monitor for vulnerabilities
