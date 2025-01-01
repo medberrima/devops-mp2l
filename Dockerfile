@@ -15,6 +15,9 @@ WORKDIR /usr/app
 # Copy package.json and package-lock.json first to optimize Docker caching
 COPY package*.json ./
 
+# clean npm cache
+RUN npm cache clean --force
+
 # Install dependencies (including dev dependencies for Next.js)
 RUN npm ci
 
