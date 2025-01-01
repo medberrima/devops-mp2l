@@ -31,7 +31,7 @@ jobs:
         run: |
           npm run lint
 
-    snyk-scan:
+  snyk-scan:
     needs: static-code-analysis-lint
     runs-on: ubuntu-latest
     steps:
