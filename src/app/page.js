@@ -25,7 +25,7 @@ const Page = () => {
       </section>
 
       <footer style={styles.footer}>
-        <p>Page 10 - mohamed - {formattedDate} - {formattedTime}</p>
+        <p>Page 11 - mohamed - {formattedDate} - {formattedTime}</p>
       </footer>
     </div>
   );

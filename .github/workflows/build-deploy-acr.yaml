@@ -55,12 +55,12 @@ jobs:
         run: |
           echo "${{ secrets.SNYK_TOKEN }}" | snyk auth
 
-      # Run Snyk test
+      # Run Snyk test for vulnerabilities
       - name: Snyk Test for vulnerabilities
         run: |
           snyk test
 
-      # Optional: Monitor for continuous monitoring
+      # Optional: Monitor the project for vulnerabilities
       - name: Snyk Monitor for vulnerabilities
         run: |
           snyk monitor
