@@ -31,7 +31,7 @@ jobs:
         run: |
           npm run lint
 
-  snyk-scan:
+    snyk-scan:
     needs: static-code-analysis-lint
     runs-on: ubuntu-latest
     steps:
@@ -50,10 +50,14 @@ jobs:
         run: |
           npm install
 
+      # Install Snyk CLI (if not already installed)
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
       # Authenticate with Snyk
       - name: Snyk Authenticate
         run: |
-          echo "${{ secrets.SNYK_TOKEN }}" | snyk auth
+          snyk auth ${{ secrets.SNYK_TOKEN }}
 
       # Run Snyk test for vulnerabilities
       - name: Snyk Test for vulnerabilities
@@ -64,6 +68,7 @@ jobs:
       - name: Snyk Monitor for vulnerabilities
         run: |
           snyk monitor
+
 
   unit-testing:
     needs: snyk-scan
