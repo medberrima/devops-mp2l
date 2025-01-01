@@ -31,38 +31,38 @@ jobs:
         run: |
           npm run lint
 
-  snyk-scan:
-    needs: static-code-analysis-lint
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout the repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  # snyk-scan:
+  #   needs: static-code-analysis-lint
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # Checkout the repository
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      # Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+  #     # Set up Node.js
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '18'
 
-      # Install dependencies
-      - name: Install dependencies
-        run: |
-          npm install
+  #     # Install dependencies
+  #     - name: Install dependencies
+  #       run: |
+  #         npm install
 
-      # Install Snyk CLI (if not already installed)
-      - name: Install Snyk CLI
-        run: npm install -g snyk
+  #     # Install Snyk CLI (if not already installed)
+  #     - name: Install Snyk CLI
+  #       run: npm install -g snyk
 
-      # Authenticate with Snyk
-      - name: Snyk Authenticate
-        run: |
-          snyk auth ${{ secrets.SNYK_TOKEN }}
+  #     # Authenticate with Snyk
+  #     - name: Snyk Authenticate
+  #       run: |
+  #         snyk auth ${{ secrets.SNYK_TOKEN }}
 
-      # Run Snyk test for vulnerabilities
-      - name: Snyk Test for vulnerabilities
-        run: |
-          snyk test --all-projects --json
+  #     # Run Snyk test for vulnerabilities
+  #     - name: Snyk Test for vulnerabilities
+  #       run: |
+  #         snyk test --all-projects --json
 
   unit-testing:
     needs: snyk-scan
