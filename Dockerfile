@@ -19,7 +19,7 @@ COPY package*.json ./
 RUN npm cache clean --force
 
 # Install dependencies (including dev dependencies for Next.js)
-RUN npm ci
+RUN npm ci --verbose
 
 # Copy the rest of the application code into the container
 COPY . .
