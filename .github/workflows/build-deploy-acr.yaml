@@ -71,6 +71,7 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         run: |
+          rm -rf node_modules  # Clear node_modules
           npm install
       # Install Snyk CLI (if not already installed)
       - name: Install Snyk CLI
@@ -79,10 +80,10 @@ jobs:
       - name: Snyk Authenticate
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
-      # Run Snyk test for vulnerabilities
+      # Run Snyk test for vulnerabilities with debug mode
       - name: Snyk Test for vulnerabilities
         run: |
-          snyk test --all-projects --json
+          snyk test --all-projects --json -d  # Run with debug mode
 
   build:
     needs: snyk-scan
