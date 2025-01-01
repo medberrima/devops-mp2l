@@ -32,7 +32,6 @@ jobs:
           npm run lint
 
   unit-testing:
-    needs: snyk-scan
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository
@@ -56,7 +55,7 @@ jobs:
           npm run test  # Runs the 'test' script defined in your package.json
 
   build:
-    needs: unit-testing
+    needs: unit-testing  # Ensures this job runs after unit-testing
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository
