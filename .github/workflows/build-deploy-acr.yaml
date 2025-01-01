@@ -85,7 +85,7 @@ jobs:
           snyk test --all-projects --json
 
   build:
-    needs: unit-testing
+    needs: snyk-scan
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository
