@@ -26,19 +26,13 @@ jobs:
         run: |
           npm install
 
-      # Run Snyk Security Scan
-      - name: Run Snyk Security Scan
-        uses: snyk/actions/node@v3
-        with:
-          command: test
-
       # Run ESLint
       - name: Run ESLint
         run: |
           npm run lint
 
-  snyk-security-scan:
-    needs: static-code-analysis-lint 
+  snyk-scan:
+    needs: static-code-analysis-lint
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository
@@ -56,18 +50,23 @@ jobs:
         run: |
           npm install
 
-      # Install Snyk CLI
-      - name: Install Snyk CLI
+      # Authenticate with Snyk
+      - name: Snyk Authenticate
         run: |
-          npm install -g snyk
+          echo "${{ secrets.SNYK_TOKEN }}" | snyk auth
 
-      # Run Snyk security test
-      - name: Run Snyk Security Test
+      # Run Snyk test
+      - name: Snyk Test for vulnerabilities
         run: |
-          snyk test --all-projects  # Scans all projects and dependencies
-          
+          snyk test
+
+      # Optional: Monitor for continuous monitoring
+      - name: Snyk Monitor for vulnerabilities
+        run: |
+          snyk monitor
+
   unit-testing:
-    needs: snyk-security-scan  
+    needs: snyk-scan
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository
